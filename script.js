@@ -19,7 +19,7 @@ function getQiblaDirection(lat, lon) {
 
 // Function to set needle rotation
 function setNeedleRotation(degrees) {
-    document.querySelector('.needle').style.transform = `rotate(${degrees}deg)`;
+    document.querySelector('.needle').style.transform = `translate(-50%, -50%) rotate(${degrees}deg)`;
 }
 
 // Get user's location and calculate Qibla direction
