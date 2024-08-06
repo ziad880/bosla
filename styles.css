@@ -11,6 +11,7 @@ body {
     position: relative;
     width: 250px;  
     height: 250px;
+    top: -50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,8 +51,8 @@ body {
 
 .direction {
     position: absolute;
-    top: 260px;
-    font-size: 19px;
+    top: -30px;
+    font-size: 14px;
     font-weight: bold;
 }
 
