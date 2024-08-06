@@ -58,7 +58,7 @@ body {
 
 #request-permission {
     position: absolute;
-    bottom: 85px;
+    bottom: -165px;
     margin-left: 11px;
     padding: 12px 24px;
     font-size: 15px;
