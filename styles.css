@@ -9,12 +9,12 @@ body {
 
 .compass {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 250px;  
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .compass-image {
@@ -25,24 +25,24 @@ body {
 
 .needle {
     position: absolute;
-    width: 50px; /* Adjust size as needed */
-    height: 100px; /* Adjust size as needed */
+    width: 60px;
+    height: 195px;
     transform-origin: center;
-    /* Center the needle vertically and horizontally */
-    top: 50%;
+    top: 73%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(0deg);
 }
 
 .arrow {
     width: 100%; /* Scale image to fit container */
-    height: auto;
+    height: 100%; /* Changed from auto to 100% */
+    object-fit: contain; /* Ensures the entire arrow is visible */
 }
 
 .center {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 13px;
+    height: 13px;
     background-color: black;
     border-radius: 50%;
     z-index: 1;
@@ -50,7 +50,41 @@ body {
 
 .direction {
     position: absolute;
-    bottom: 10px;
-    font-size: 14px;
+    top: 260px;
+    font-size: 19px;
     font-weight: bold;
+}
+
+#request-permission {
+    position: absolute;
+    bottom: 85px;
+    margin-left: 11px;
+    padding: 12px 24px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#request-permission:hover {
+    background-color: #0056b3;
+}
+
+#location-info {
+    position: absolute;
+    bottom: 60px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+#error-message {
+    position: absolute;
+    bottom: 30px;
+    font-size: 14px;
+    color: red;
+    text-align: center;
 }

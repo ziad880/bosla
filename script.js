@@ -1,32 +1,59 @@
-// Function to get Qibla direction based on latitude and longitude
-function getQiblaDirection(lat, lon) {
-    const qiblaLat = 21.4225; // Latitude of Kaaba
-    const qiblaLon = 39.8262; // Longitude of Kaaba
-    const rad = Math.PI / 180;
-    
-    lat *= rad;
-    lon *= rad;
-    qiblaLat *= rad;
-    qiblaLon *= rad;
-    
-    const deltaLon = qiblaLon - lon;
-    const x = Math.cos(qiblaLat) * Math.sin(deltaLon);
-    const y = Math.cos(lat) * Math.sin(qiblaLat) - Math.sin(lat) * Math.cos(qiblaLat) * Math.cos(deltaLon);
-    const angle = Math.atan2(x, y);
-    
-    return (angle * 180 / Math.PI + 360) % 360; // Return angle in degrees
+// Function to handle errors
+function displayError(message) {
+    console.error(message);
+    document.getElementById('error-message').innerText = message;
 }
 
-// Function to set needle rotation
-function setNeedleRotation(degrees) {
-    document.querySelector('.needle').style.transform = `translate(-50%, -50%) rotate(${degrees}deg)`;
+// Function to update compass needle
+function updateCompass(event) {
+    const alpha = event.alpha || 0; // Orientation in degrees
+    document.querySelector('.needle').style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
 }
 
-// Get user's location and calculate Qibla direction
-navigator.geolocation.getCurrentPosition((position) => {
-    const { latitude, longitude } = position.coords;
-    const qiblaDirection = getQiblaDirection(latitude, longitude);
-    setNeedleRotation(qiblaDirection);
-}, (error) => {
-    console.error("Unable to retrieve location", error);
-});
+// Function to get geolocation and update the UI
+function requestGeolocationPermission() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+
+            // Using qibla-direction library to calculate qibla direction
+            const qiblaDirection = QiblaDirection.getDirection(latitude, longitude);
+            
+            document.getElementById('location-info').innerText = `موقعك الحالي: Latitude: ${latitude.toFixed(4)}, Longitude: ${longitude.toFixed(4)}`;
+            document.getElementById('direction').innerText = `اتجاه القبلة: ${qiblaDirection.toFixed(2)} درجة`;
+        }, error => {
+            displayError("خطأ في الحصول على الموقع: " + error.message);
+        });
+    } else {
+        displayError("الجيوبوتينش غير مدعوم.");
+    }
+}
+
+// Function to request device orientation permissions
+function requestDeviceOrientationPermission() {
+    if (window.DeviceOrientationEvent) {
+        if (DeviceOrientationEvent.requestPermission) {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', updateCompass, true);
+                        requestGeolocationPermission();
+                    } else {
+                        displayError("الأذونات المطلوبة لمستشعرات الاتجاه مرفوضة.");
+                    }
+                })
+                .catch(error => {
+                    displayError("خطأ في طلب الإذن: " + error.message);
+                });
+        } else {
+            // For non-iOS devices
+            window.addEventListener('deviceorientation', updateCompass, true);
+            requestGeolocationPermission();
+        }
+    } else {
+        displayError("المستشعرات غير مدعومة في هذا المتصفح.");
+    }
+}
+
+// Event listener for the permission button
+document.getElementById('request-permission').addEventListener('click', requestDeviceOrientationPermission);

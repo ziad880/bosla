@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,8 +13,13 @@
             <img src="arrow.png" alt="قبلة" class="arrow">
         </div>
         <div class="center"></div>
-        <div class="direction">قبلة</div>
     </div>
+    
+    <div class="direction" id="direction">بوصلة القبلة</div>
+    <button id="request-permission">طلب الأذونات</button>
+    <div id="location-info"></div>
+    <div id="error-message"></div> 
+    <script src="https://cdn.jsdelivr.net/npm/qibla-direction@1.0.0/dist/qibla-direction.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
